@@ -9,41 +9,43 @@ export interface CartProduct
 }
 
 export interface ICartContext {
-    isOpen: boolean;
-    products: CartProduct[];
-    total: number;
-    toggleCart: () => void;
-    addProduct: (product: CartProduct) => void;
-    decreaseProductQuantity: (productId: string) => void;
-    increaseProductQuantity: (productId: string) => void;
-    removeProduct: (productId: string) => void;
+  isOpen: boolean;
+  products: CartProduct[];
+  total: number;
+  totalQuantity: number;
+  toggleCart: () => void;
+  addProduct: (product: CartProduct) => void;
+  decreaseProductQuantity: (productId: string) => void;
+  increaseProductQuantity: (productId: string) => void;
+  removeProduct: (productId: string) => void;
 }
 
 export const CartContext = createContext<ICartContext>({
-    isOpen: false,
-    products: [],
-    total: 0,
-    toggleCart: () => {},
-    addProduct: () => {},
-    decreaseProductQuantity: () => {},
-    increaseProductQuantity: () => {},
-    removeProduct: () => {}
+  isOpen: false,
+  total: 0,
+  totalQuantity: 0,
+  products: [],
+  toggleCart: () => {},
+  addProduct: () => {},
+  decreaseProductQuantity: () => {},
+  increaseProductQuantity: () => {},
+  removeProduct: () => {},
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [products, setProducts] = useState<CartProduct[]>([]);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-  
-    const total = products.reduce((acc, product) => {
-      return acc + product.price * product.quantity;
-    }, 0);
+  const [products, setProducts] = useState<CartProduct[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-
-
-    const toggleCart = () => {
-      setIsOpen((prev) => !prev);
-};
-const addProduct = (product: CartProduct) => {
+  const total = products.reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0);
+  const totalQuantity = products.reduce((acc, product) => {
+    return acc + product.quantity;
+  }, 0);
+  const toggleCart = () => {
+    setIsOpen((prev) => !prev);
+  };
+  const addProduct = (product: CartProduct) => {
     const productIsAlreadyOnTheCart = products.some(
       (prevProduct) => prevProduct.id === product.id,
     );
@@ -55,7 +57,7 @@ const addProduct = (product: CartProduct) => {
         if (prevProduct.id === product.id) {
           return {
             ...prevProduct,
-            quantity: prevProduct.quantity + product.quantity
+            quantity: prevProduct.quantity + product.quantity,
           };
         }
         return prevProduct;
@@ -63,31 +65,31 @@ const addProduct = (product: CartProduct) => {
     });
   };
   const decreaseProductQuantity = (productId: string) => {
-    setProducts(prevProducts => {
-      return prevProducts.map(prevProduct => {
+    setProducts((prevProducts) => {
+      return prevProducts.map((prevProduct) => {
         if (prevProduct.id !== productId) {
-          return prevProduct
-        }
-        if (prevProduct.quantity == 1) {
           return prevProduct;
         }
-        return {...prevProduct, quantity: prevProduct.quantity -1}
+        if (prevProduct.quantity === 1) {
+          return prevProduct;
+        }
+        return { ...prevProduct, quantity: prevProduct.quantity - 1 };
       });
     });
   };
   const increaseProductQuantity = (productId: string) => {
-    setProducts(prevProducts => {
-      return prevProducts.map(prevProduct => {
+    setProducts((prevProducts) => {
+      return prevProducts.map((prevProduct) => {
         if (prevProduct.id !== productId) {
-          return prevProduct
+          return prevProduct;
         }
-        return {...prevProduct, quantity: prevProduct.quantity +1}
+        return { ...prevProduct, quantity: prevProduct.quantity + 1 };
       });
     });
   };
   const removeProduct = (productId: string) => {
     setProducts((prevProducts) =>
-    prevProducts.filter((prevProduct) => prevProduct.id !== productId),
+      prevProducts.filter((prevProduct) => prevProduct.id !== productId),
     );
   };
   return (
@@ -95,12 +97,13 @@ const addProduct = (product: CartProduct) => {
       value={{
         isOpen,
         products,
-        total,
         toggleCart,
         addProduct,
         decreaseProductQuantity,
         increaseProductQuantity,
-        removeProduct
+        removeProduct,
+        total,
+        totalQuantity,
       }}
     >
       {children}

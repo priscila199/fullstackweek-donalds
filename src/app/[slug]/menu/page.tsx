@@ -25,7 +25,11 @@ const RestaurantMenuPage = async ({
   }
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
-    include: { menuCategories: { include: { products: true } } },
+    include: {
+      menuCategories: {
+        include: { products: true },
+      },
+    },
   });
   if (!restaurant) {
     return notFound();
@@ -39,3 +43,5 @@ const RestaurantMenuPage = async ({
 };
 
 export default RestaurantMenuPage;
+
+// http://localhost:3000/fsw-donalds/menu?consumptionMethod=dine_in

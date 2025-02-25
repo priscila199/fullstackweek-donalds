@@ -14,11 +14,11 @@ interface ConsumptionMethodOptionProps {
 }
 
 const ConsumptionMethodOption = ({
-  imageUrl,
+  slug,
   imageAlt,
+  imageUrl,
   buttonText,
   option,
-  slug,
 }: ConsumptionMethodOptionProps) => {
   return (
     <Card>

@@ -17,6 +17,7 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
   }
   return (
     <div className="flex h-screen flex-col items-center justify-center px-6 pt-24">
+      {/* LOGO E TITULO */}
       <div className="flex flex-col items-center gap-2">
         <Image
           src={restaurant.avatarImageUrl}
@@ -24,11 +25,11 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
           width={82}
           height={82}
         />
-        <h2 className="font-semibold"></h2>
-        {restaurant.name}
+        <h2 className="font-semibold">{restaurant.name}</h2>
       </div>
+      {/* BEM VINDO */}
       <div className="space-y-2 pt-24 text-center">
-        <h3 className="text-2xl font-semibold">Seja Bem-Vindo!</h3>
+        <h3 className="text-2xl font-semibold">Seja bem-vindo!</h3>
         <p className="opacity-55">
           Escolha como prefere aproveitar sua refeição. Estamos aqui para
           oferecer praticidade e sabor em cada detalhe!
@@ -38,15 +39,15 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
         <ConsumptionMethodOption
           slug={slug}
           option="DINE_IN"
-          buttonText="Para Comer Aqui"
-          imageAlt="Para Comer Aqui"
+          buttonText="Para comer aqui"
+          imageAlt="Comer aqui"
           imageUrl="/dine_in.png"
         />
         <ConsumptionMethodOption
           slug={slug}
           option="TAKEAWAY"
-          buttonText="Para Levar"
-          imageAlt="Para Levar"
+          buttonText="Para levar"
+          imageAlt="Para levar"
           imageUrl="/takeaway.png"
         />
       </div>
